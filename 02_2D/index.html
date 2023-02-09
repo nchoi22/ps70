@@ -89,7 +89,32 @@ For my personal modeling task, I decided to model components of one of my favori
 
 <img src="/ps70/02_2D/pics/cube_interior.png" alt="cubeinterior">
 
-I started by creating two separate components in my Fusion 360 file, with one named "Core" and the other named "Center". Starting with the core, I decided to make a simple model of 6 intersecting pipes. 
+I started by creating two separate components in my Fusion 360 file, with one named "Core" and the other named "Center". Starting with the core, I decided to make a simple model of 6 intersecting pipes. I started by extruding a circle (diameter given by measured user parameters) along an axis and centering it at the origin. Next, I created an offset plane, such that I could create another circle to extrude on that plane directly. When extruding this second circle, I had it extrude outwards a given distance (based on measurements and parameters) and inwards towards the existing cylinder. I had this new cylinder be "joined" to the first cylinder. This process is shown in the two images below:
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/02_2D/pics/offset_plane.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+    <div class="col-sm-3"> 
+      <img src="/ps70/02_2D/pics/offset_extrude.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+I then used the "Circular Pattern" on this new extruded cylinder to wrap it around the first cylinder, giving me a full set of intersecting pipes that resemble my core:
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/02_2D/pics/circular_pipe.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+    <div class="col-sm-3">
+      <img src="/ps70/02_2D/pics/6pipe.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
 
 
 
