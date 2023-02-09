@@ -128,7 +128,7 @@ Using a very similar process, I created extrusion cuts to create the holes insid
   </div>
 </div><br>
 
-Next, I worked on the Center, which was a separate component. I could toggle the core I made in and out of view, which made for a good reference to know where to create my center piece such that they fit together in my model. My center model was simplified to be a thin cylinder that fits inside a hole in the core, a larger cylinder that rests on top of the core, both of which are connected to a rectangular prism. This process was simple, as I just built each 3D shape one by one, using offset planes to get them started at the right place. This is shown in these images below:
+Next, I worked on the Center, which was a separate component. I could toggle the core I made in and out of view, which made for a good reference to know where to create my center piece such that they fit together in my model. My center model was simplified to be a thin cylinder that fits inside a hole in the core, a larger cylinder that rests on top of the core, both of which are connected to a rectangular prism. This process was simple, as I just built each 3D shape one by one, using offset planes to get them started at the right place. I added a fillet to the edges of the cneter for a bit more realness. This is shown in these images below:
 
 <div class="container-fluid bg-3 text-center">    
   <div class="row">
@@ -138,22 +138,22 @@ Next, I worked on the Center, which was a separate component. I could toggle the
     <div class="col-sm-3">
       <img src="/ps70/02_2D/pics/center_final.png" class="img-responsive" style="width:100%" alt="Image"></a>
     </div>
+    <div class="col-sm-3">
+      <img src="/ps70/02_2D/pics/cube_overlay.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
   </div>
 </div><br>
 
+After adding a black color to my center piece, my final set of components are shown below:
 
-
+<img src="/ps70/02_2D/pics/cube_final.png" alt="cubeinterior">
 
 
 Dimensions of the core and center piece were measured using a caliper, and inputted as user parameters in Fusion 360, which are shown below.
 
 <img src="/ps70/02_2D/pics/cube_parameters.png" alt="cubeparams">
 
-
-
-
-
-
+Finally, using assembly in Fusion 360, I was able to use the "joint" tool to create a joint origin that the center could spin around, mimicing the motion of an actual Rubik's Cube side. This allowed the two separate components to be joined at a common spot with a revolution axis. A video/gif of the spinning center will be added below:
 
 
 <img src="/ps70/02_2D/pics/cube.gif" alt="center-piece-gif">
