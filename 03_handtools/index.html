@@ -44,15 +44,43 @@
 </nav>
 
 <div class="container-fluid bg-3 text-center">    
-  <h3>Week 3: </h3><br>
+  <h3>Week 3: Hand Tools and Fabrication</h3><br>
 </div>
 
 
 <xmp style="display:none;">
 <br> 
 
+This week, we were tasked with creating a kinetic sculpture, using circuitry to move and control the sculpture.
 
-#### Week 3:
+## The Idea
+
+The original inspiration was to create a moving sculpture that could hold a pencil and draw out simple patterns, similar to an automatic spirograph like the one made <a href="https://www.hackster.io/news/cycloid-o-matic-draws-fun-shapes-with-modded-steppers-3cdf793dbb6a">here</a>. I decided to make my initial project simpler, and wanted to try doing a five-bar linkage system that represents a bicyle system. A figure below from <a href="https://demonstrations.wolfram.com/FiveBarLinkageModelOfTheBicycleRiderSystem/">Wolfram Demonstrations</a> shows a snapshot of the system. The idea was to use one gear connected to a motor, and another gear that contains the crank, to rotate the crank about the bottom axis to mimic a bicycle motion.
+
+<img src="/ps70/fivebar_bike.png" alt="wolfram_fig">
+
+I created an initial five-bar linkage kinematic sketch on Fusion 360 following <a href="https://www.youtube.com/watch?v=rAktZZSBHnA&ab_channel=MahmoudMousa">Mahmoud Mousa's</a> tutorial, grounding the hip and rotation axis. However, when I tried rotating the "pedal" node around the rotation axis, because there were three moving links rather than two, this extra degree of freedom caused very unpredictable movements, that clearly did not resemble bicycle pedaling. Due to this, I decided to first try making a simpler four-bar linkage to reproduce the circular motion, and created an assembly of link components in Fusion 360:
+
+<img src="/ps70/4bar.png" alt="4bar">
+
+Next I decided to work on creating gears for my system. I wanted two gears - one that will be connected to the motor, and a larger connecting gear that will hold the crank link. I designed 12 and 24 teeth gears using the Spur Gear add-in on Fusion 360. It took a few iterations to figure out the workflow to get from a spur gear created on Fusion 360 to outputting a PDF or DXF file that will work with the laser cutter, as well as making sure the size of the gears didn't get scaled improperly during the process. After one iteration of making gears way too small, and another of making them way too big, I finally printed the right gears:
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/gears_fusion.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+    <div class="col-sm-3"> 
+      <img src="/ps70/gearsv2.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+I created a 33.4mm hole in the smaller gear, such that the black wheel that can easily connect to the motor can fit inside. The kerf was a bit too large, so I will have to adjust on Fusion 360 to get a nicer fit between the wheel and the gear.
+
+Unfortunately, as of now this is the progress I have made so far. Check back in again to see the final assignment design!
+
+
 
 </xmp>
 </body>
