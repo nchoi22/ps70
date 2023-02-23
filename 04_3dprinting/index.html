@@ -52,7 +52,198 @@
 <br> 
 
 
-#### Week 4: 
+#### The Inspiration: 
+
+
+
+#### Code:
+
+<pre><code>
+  // define LED pins
+const int LED_1 = 11;     //LED row 1
+const int LED_2 = 13;     //LED row 2    
+const int LED_3 = 12;     //LED row 3
+
+// define piezo input
+const int piezoSensor = 2;
+const int threshold = 100;
+
+int sensorReading = 0;
+
+
+void led1() {
+  //turn on LED L1
+  pinMode(LED_1, OUTPUT);     //row 1
+  digitalWrite(LED_1, LOW);
+  pinMode(LED_2, OUTPUT);     //row 2
+  digitalWrite(LED_2, HIGH);  
+  pinMode(LED_3, INPUT);      //row 3
+  digitalWrite(LED_3, LOW);
+}
+
+void led2() {
+  //turn on LED L2
+  pinMode(LED_1, OUTPUT);     //row 1
+  digitalWrite(LED_1, HIGH);
+  pinMode(LED_2, OUTPUT);     //row 2
+  digitalWrite(LED_2, LOW);   
+  pinMode(LED_3, INPUT);      //row 3
+  digitalWrite(LED_3, LOW);
+}
+
+void led3() {
+  //turn on LED L3
+  pinMode(LED_1, INPUT);      //row 1
+  digitalWrite(LED_1, LOW);
+  pinMode(LED_2, OUTPUT);     //row 2
+  digitalWrite(LED_2, LOW);  
+  pinMode(LED_3, OUTPUT);     //row 3
+  digitalWrite(LED_3, HIGH);
+}
+
+void led4() {
+  //turn on LED L4
+  pinMode(LED_1, INPUT);     //row 1
+  digitalWrite(LED_1, LOW);
+  pinMode(LED_2, OUTPUT);    //row 2
+  digitalWrite(LED_2, HIGH);  
+  pinMode(LED_3, OUTPUT);    //row 3
+  digitalWrite(LED_3, LOW);
+}
+
+void led5() {
+  //turn on LED L5
+  pinMode(LED_1, OUTPUT);
+  digitalWrite(LED_1, HIGH);
+  pinMode(LED_2, INPUT);
+  digitalWrite(LED_2, LOW);
+  pinMode(LED_3, OUTPUT);
+  digitalWrite(LED_3, LOW);
+}
+
+void led6() {
+  //turn on LED L6
+  pinMode(LED_1, OUTPUT);    //row 1
+  digitalWrite(LED_1, LOW);
+  pinMode(LED_2, INPUT);     //row 2
+  digitalWrite(LED_2, LOW);
+  pinMode(LED_3, OUTPUT);    //row3
+  digitalWrite(LED_3, HIGH);
+}
+
+void in_order() {
+  led1();
+  delay(100);
+  led2();
+  delay(100);
+  led3();
+  delay(100);
+  led4();
+  delay(100);
+  led5();
+  delay(100);
+  led6();
+  delay(100);
+}
+
+void circular() {
+  led1();
+  delay(100);
+  led3();
+  delay(100);
+  led5();
+  delay(100);
+  led6();
+  delay(100);
+  led4();
+  delay(100);
+  led2();
+  delay(100);
+}
+
+void two_at_a_time() {
+  for (int i = 1; i < 5000; i = i+1) {
+    led1();
+    led2();
+    //delay(1);
+  }
+
+  for (int i = 1; i < 5000; i = i+1) {
+    led3();
+    led4();
+    //delay(1);
+  }
+
+  for (int i = 1; i < 5000; i = i+1) {
+    led5();
+    led6();
+    //delay(1);
+  }
+  
+}
+
+void stay_lit() {
+  for (int i = 1; i < 5000; i = i+1) {
+    led1();
+    //delay(1);
+  }
+
+  for (int i = 1; i < 5000; i = i+1) {
+    led1();
+    led3();
+    //delay(1);
+  }
+
+  for (int i = 1; i < 5000; i = i+1) {
+    led1();
+    led3();
+    led5();
+    //delay(1);
+  }
+  for (int i = 1; i < 5000; i = i+1) {
+    led1();
+    led3();
+    led5();
+    led6();
+    //delay(1);
+  }
+
+  for (int i = 1; i < 5000; i = i+1) {
+    led1();
+    led3();
+    led5();
+    led6();
+    led4();
+    //delay(1);
+  }
+
+  for (int i = 1; i < 5000; i = i+1) {
+    led1();
+    led3();
+    led5();
+    led6();
+    led4();
+    led2();
+    //delay(1);
+  }
+}
+
+
+void setup() 
+{
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  // I want to try to incorporate a piezo sensor to have the LED array "react" to knocking, but I haven't worked it out yet
+  sensorReading = analogRead(piezoSensor);
+  Serial.println(sensorReading);
+
+  // call a function for some sort of LED pattern
+  circular();
+}
+</code></pre>
 
 </xmp>
 </body>
