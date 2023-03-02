@@ -67,8 +67,25 @@ For this week's assignment, I decided to create something that would be able to 
 
 ### Gyroscope
 
+I began by designing my gyroscope in Fusion 360, using <a href="https://www.youtube.com/watch?v=EQxj1Ybi86U&ab_channel=SPARKPLUG">SPARK PLUG's</a> tutorial as a guideline in making each ring of the gyroscope. The tutorial used raw values, however, so this ended up being great practice in creating a parameterized workflow in Fusion 360. My initial design and prints are shown below:
 
+[insert iteration 1 images: parameters, cad, print]
 
+There were several issues with iteration 1. Each ring has pins that are inserted into holes on the next largest ring. The first iteration broke because there wasn't enough separation between the pin and the hole (only 0.1mm difference in diameter), so the plastic just broke. 
+
+For the next iteration, I made the difference in pin and hole diameter (0.5mm), and increased the width of each ring to 5mm in order to increase both the hole and pin size (to make the pins themselves stronger). The updated parameters and second print are shown below:
+
+[insert iteration 2 images: parameters, print]
+
+Iteration 2 was better. Each ring spun, except for the middle ring, which had one pin that was stuck inside the hole, resulting in the pin itself twisting. Additionally this iteration was printed with the "brim" setting on to ensure the print filament stuck to the heating pad, and in the process of taking this off, the gyroscope plastic broke. For the next iteration, I wanted to ensure that we used bigger holes and bigger pins (with more space in between them), as well as adding end caps to each pin to ensure stability of each ring's position. Below were the updated parameters and prints of the next iteration:
+
+[insert iteration 3 images]
+
+This was by far the best iteration yet. The rings spun much more easily, and the pins were strong enough to withstand the initial friction and breaking of plastic to get the spinning started. However, on the outer ring, the end caps that were added were too close to the holding ring, so the outer ring would get stuck. At this point, it felt like I was super close to a working gyroscope. I decided to make the end caps thinner, increase the hole diameter by 0.1mm, and use a finer print resolution on Prusa Slicer (0.1mm). The final design and parameters are shown below:
+
+[insert iteration 4 images]
+
+Please check back to see images and comments on how iteration 4 went! Below are the softwares and materials I used, as well as downloadable files that could recreate this gyroscope. 
 
 Software Used:
 1. Fusion 360
