@@ -71,31 +71,22 @@ Charlieplexing: A way to use N I/O pins to control N(N-1) LEDs
   </div>
 </div><br>
 
-#### Preliminary Demos:
+Though the inspiration came from the LED cube shown above, I knew this wouldn't be a good place to start. To start, I wanted to make a basic charlieplexing setup using 3 I/O pins and 6 LEDs. I followed <a href="https://www.instructables.com/Charlieplexing-the-Arduino/">this instructable</a> to set up my first circuit, but ran into issues getting every LED to light up. It turns out the given schematic was wrong, but once I added a missing wire, the LED's all lit up using test code!
 
+Materials for setting up the circuit:
+1. 6x LEDs
+2. Breadboard
+3. ESP32 S2 Dev Board
+4. Wires
+5. 3x 1k Ohm Resisters
 
+I then adapted the test code given on the instructables site to add more capability to the LEDs. First, I labeled each LED on the breadboard with a number (1, 2, ..., 6), and created functions that would turn on each LED. These functions would simply vary the pinMode of each I/O pin and write either a LOW or HIGH signal to these pins. I then wrote functions that would create specific patterns within the 6 LEDs, using the individual LED functions.
 
-
-<div class="container-fluid bg-3 text-center">    
-  <div class="row">
-    <div class="col-sm-3">
-      <video width="200" controls autoplay>
-        <source src="/ps70/circular.mov" type="video/mp4">
-      </video> 
-    </div>
-    <div class="col-sm-3"> 
-      <video width="200" controls autoplay>
-        <source src="/ps70/two_at_once.mov" type="video/mp4">
-      </video> 
-    </div>
-    <div class="col-sm-3"> 
-      <video width="200" controls autoplay>
-        <source src="/ps70/staylit.mov" type="video/mp4">
-      </video> 
-    </div>
-  </div>
-</div><br>
-
+Current Functions:
+1. void in_order(): turns on the LEDs in order
+2. void circular(): turns on LEDs one by one in a circular pattern
+3. void two_at_a_time(): turns on LEDs two at a time, by oscillating two LED's on and off very quickly 
+4. void stay_lit(): attempting to turn the LEDs on in order, without turning any LED that's been turned on back off
 
 
 #### Code:
@@ -288,6 +279,34 @@ void loop()
   circular();
 }
 </code></pre>
+
+#### Preliminary Demos:
+
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <video width="200" controls autoplay>
+        <source src="/ps70/circular.mov" type="video/mp4">
+      </video> 
+    </div>
+    <div class="col-sm-3"> 
+      <video width="200" controls autoplay>
+        <source src="/ps70/two_at_once.mov" type="video/mp4">
+      </video> 
+    </div>
+    <div class="col-sm-3"> 
+      <video width="200" controls autoplay>
+        <source src="/ps70/staylit.mov" type="video/mp4">
+      </video> 
+    </div>
+  </div>
+</div><br>
+
+
+Preliminary demos show success in creating the in_order, circular, and two_at_a_time patterns on the LEDs. However, the stay_lit() function did not work very well, and was the first large problem that I ran into through the code. This was an indicator that the way I am coding these LEDs programs as a whole is probably quite inefficient and suboptimal. 
+
+As part of my next steps, I'd love to figure out a new way of creating software for using charlieplexed LEDs. One possible route is rather than creating individual functions for each LED to turn on, I could create one matrix that stores the pinMode and digitalWrite values that correspond to each LED turning on. This way, the matrix could be referenced in a specific way for each LED to turn on. 
 
 </xmp>
 </body>
