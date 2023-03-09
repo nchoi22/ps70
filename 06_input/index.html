@@ -103,8 +103,8 @@ I will need to take into account these results to change my circuitry for more s
 
 <pre><code>
 
-  #include <CapacitiveSensor.h>
-#include <Adafruit_NeoPixel.h>
+#include CapacitiveSensor.h
+#include Adafruit_NeoPixel.h
 
 
 CapacitiveSensor   cs_7_5 = CapacitiveSensor(7,5);        // 10 megohm resistor between pins 7 & 5, pin5 is sensor pin, add wire, foil
@@ -139,7 +139,7 @@ void setup()
 
   // The first NeoPixel in a strand is #0, second is 1, all the way up
   // to the count of pixels minus one.
-  for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
+  for(int i=0; i < NUMPIXELS; i++) { // For each pixel...
 
     // strip.Color() takes RGB values, from 0,0,0 up to 255,255,255
     // Here were using a moderately bright green color:
