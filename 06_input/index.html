@@ -44,7 +44,7 @@
 </nav>
 
 <div class="container-fluid bg-3 text-center">    
-  <h3>Week 6: </h3><br>
+  <h3>Week 6: Input Devices</h3><br>
 </div>
 
 
@@ -52,7 +52,139 @@
 <br> 
 
 
-#### Week 6:
+## Assignment:
+
+This week, we were tasked with creating our own capacitive sensor to measure some physical quantity, and calibrating this and another sensor of our choosing. For the second sensor, I chose an inertial measurement unit (IMU MPU6050).
+
+I decided to create a simple capacitive sensor that can detect the distance a human hand is from the sensor, and use this information to control how many LED's are lit up on an LED strip. The basic setup for this is shown below:
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/cap_sense_setup1.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+In this initial physical setup, we see a copper sheet serving as one end of our capacitor, and a human hand being help above it would serve as the other end. The Arduino Uno is also connected to an LED strip with 10 nodes, and this strip is upright against a wall of styrofoam. The two pieces of styrofoam that hold the copper sheet and the LED strip are simply held together with toothpicks in this initial setup. [A schematic for the circuit will be added shortly].
+
+The idea is that the distance from the copper sheet to my hand will map to how many LED's should light up (i.e. any LED below my hand level should be turned on). This way, I could control the LED strip without touching anything! 
+
+Arduino Libraries: <a href="https://playground.arduino.cc/Main/CapacitiveSensor/">CapacitiveSensor</a>, <a href="https://github.com/adafruit/Adafruit_NeoPixel">Adafruit_NeoPixel</a>
+
+Materials: Copper sheet, 10MOhm resistor, wires, 10-node LED strip, Arduino Uno, 1kOhm resistor
+
+After setting up the circuit and basic code, I attempted an initial calibration. To do so, I measured the distance between each LED on the strip (1.7cm) and set up markers on the side of the physical setup to represent different heights above the copper sheet in increments of 1.7cm. This is shown below:
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/cap_sense_cali.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+Then, I noted down the (roughly) average sensor readings that correspond to what height my hand was at, and created a plot using MATLAB:
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/cap_cal_1.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+The plot shows both sensor readings vs. hand position, as well as the baseline sensor reading without the hand above. We see some problems here - the sensor loses sensitivity FAST as the hand position rises, and it's very hard to distinguish between heights from ~10cm-17cm as the sensor readings are all very close together. The overall curve resembles an exponential decay. Another issue found was that the ambient baseline sensor output (shown in red) varied a lot, and overall our sensor output signal was quite noisy. Some potential solutions to try:
+grounding the Arduino board, use a larger resistor (>10Mohm) to increase sensitivity, adding a small capacitor in parallel to stabilize sensor readings.
+
+I will need to take into account these results to change my circuitry for more sensitive and stable readings, and implement better code to have the system do what I want it to do. The current state of the code, which has the basic shell of what the program will do, is shown below. After better calibration is achieved, the void led_update() function will be modified to map sensor readings to a physical height, and then to the number of LEDs that should be lit up. 
+
+### Code:
+
+<pre><code>
+
+  #include <CapacitiveSensor.h>
+#include <Adafruit_NeoPixel.h>
+
+
+CapacitiveSensor   cs_7_5 = CapacitiveSensor(7,5);        // 10 megohm resistor between pins 7 & 5, pin5 is sensor pin, add wire, foil
+
+#define PIN        9 
+#define NUMPIXELS 10 
+#define DELAYVAL 500 // Time (in milliseconds) to pause between pixels
+
+// define NeoPixel strip object
+Adafruit_NeoPixel strip(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+
+// define global variables
+long current_sensor_val = 0;
+unsigned long currentMillis = millis();
+int current_led = 0;
+const int tol = 100;
+int diff = 0;
+const int max = 700
+
+void setup()                    
+{
+
+  strip.begin(); // INITIALIZE NeoPixel strip object
+  strip.show();            // Turn OFF all pixels ASAP
+  strip.setBrightness(10); // Set BRIGHTNESS low to reduce draw (max = 255)
+
+  cs_7_5.set_CS_AutocaL_Millis(0xFFFFFFFF);     // turn off autocalibrate on channel 1 - just as an example
+
+  strip.clear(); // Set all pixel colors to 'off' 
+
+  
+
+  // The first NeoPixel in a strand is #0, second is 1, all the way up
+  // to the count of pixels minus one.
+  for(int i=0; i<NUMPIXELS; i++) { // For each pixel...
+
+    // strip.Color() takes RGB values, from 0,0,0 up to 255,255,255
+    // Here were using a moderately bright green color:
+    strip.setPixelColor(i, strip.Color(0, 150, 0));
+
+    strip.show();   // Send the updated pixel colors to the hardware.
+
+    delay(DELAYVAL); // Pause before next pass through loop
+  }
+
+  Serial.begin(9600);
+
+}
+
+void led_update(long sensor, long current_val, int diff) {
+
+
+
+}
+
+void loop()                    
+{
+  
+
+    //long start = millis();
+    long total =  cs_7_5.capacitiveSensor(30);
+
+    diff = total - current_sensor_val;
+
+    if (abs(diff) > tol) {
+      led_update(total,current_sensor_val,diff);
+    }
+
+    //Serial.print(millis() - start);        // check on performance in milliseconds
+    //Serial.print("\t");                    // tab character for debug window spacing
+
+    //Serial.println(total);                  // print sensor output 1
+
+    delay(10);                             // arbitrary delay to limit data to serial port 
+}
+
+
+
+
+</code></pre>
 
 </xmp>
 </body>
