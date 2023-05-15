@@ -187,11 +187,28 @@ void loop()
 
 ### Ultrasonic Sensor HC-SR04
 
-Next, I decided to try out and calibrate the ultrasonic sensor HC-S404, imaged below. 
+Next, I decided to try out and calibrate the ultrasonic sensor HC-S404, imaged below.
 
-[INSERT IMAGE]
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/ultra.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
 
-This ultrasonic sensor emits a 40kHz frequency sound wave, which bounces off an object in front of it to return to the receiver. Thus, using the speed of sound and the time it took for the signal to come back to the sensor, the distance of the object in front of it can be estimated.
+This ultrasonic sensor emits a 40kHz frequency sound wave, which bounces off an object in front of it to return to the receiver. Thus, using the speed of sound and the time it took for the signal to come back to the sensor, the distance of the object in front of it can be estimated. I tried calibrating the sensor by first collecting sensor data at fixed distances from the sensor (note: the distances were measured using a ruler starting at the front edge of the emitter and receiver of the sensor). The figure below shows the relationship of sensor readings vs. the actual distance, for distances ranging from 0-30cm.
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/ultrasonic_graph.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+For disances under 3cm, we see some strange behavior where the sensor is actually reading higher distances than the real value, meaning there is a lower bound on where the sensor is accurate. Afterwards, there is a fairly clean linear relationship between the sensor readings and the actual distance. However, the sensor readings are very consistently about 1cm shorter than the actual distance. Since the actual distance is measured from the very front edge of the sensor, this would not be an error from the ruler placement. Thus, it may be a good rule of thumb to perform sensor tests like this, find the average offset from the true distance, and account for this in the reporting of sensor values.
+
 
 </xmp>
 </body>
