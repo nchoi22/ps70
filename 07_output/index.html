@@ -62,7 +62,7 @@ I decided to use an RGB LED for my new output device. The goal was simple: to to
 
 Using an Arduino Uno as my microcontroller, I created a very simple circuit incorporating the RGB LED and the button. The R, G, and B prongs on the LED are connected to pins 9, 10, and 11, respectively, on the Arduino, while the button is connected to pin 2. The circuit is shown below:
 
-[INSERT IMAGE]
+<img src="/ps70/rgb_circuit.png" class="img-responsive" style="width:100%" alt="Image"></a>
 
 I then created a class called RGB_LED, from which I can declare an object defining the LED I have in my circuit. It is defined by the pin numbers of each color, as well as an integer defining the current color of the LED. In the update function of the class, the color of the LED changes depending on what the current state of the LED is, and this update function is triggered by the press of the button. The desired order of the color toggle was Red, Green Blue, Red, etc. The code for this is shown below:
 
@@ -147,7 +147,11 @@ The video clip below shows the functionality of this code:
 
 #### CAD for CNC
 
-Please see 
+Please see next week's page <a href="https://nchoi22.github.io/ps70/08_cnc/index.html">here</a> for more details. I created an STL file for a CNC milling job using CAD of Manchester United's (my favorite soccer club) logo. Please find an image and downloadable STL file below:
+
+<img src="/ps70/manu_stl_final.png" class="img-responsive" style="width:100%" alt="Image"></a>
+
+<a download href="/ps70/manchester_v4.stl">Download the STL File</a>
 
 </xmp>
 </body>
