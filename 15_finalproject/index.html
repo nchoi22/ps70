@@ -54,7 +54,7 @@
 
 ### Final Project Idea
 
-Keeping in line with my interests outlined in <a href="nchoi22.github.io/ps70/01_intro/index.html">Week 1</a>, I decided to create a PID control system for my final project. "PID" stands for proportional, integral, and derivative, respectively, and is a very common and powerful way to design and tune effective control systems. I decided to build a relatively simple, yet challenging control system: balancing a ball on the middle of a beam. A sample setup is shown below:
+Keeping in line with my interests outlined in <a href="nchoi22.github.io/ps70/01_intro/index.html">Week 1</a>, I decided to create a PID control system for my final project. "PID" stands for proportional, integral, and derivative, respectively, and is a very common and powerful way to design and tune effective control systems. I decided to build a relatively simple, yet challenging control system: balancing a ping pong ball on the middle of a beam. A sample setup is shown below:
 
 <div class="container-fluid bg-3 text-center">    
   <div class="row">
@@ -86,7 +86,28 @@ Initially, I was planning to design a remote control for the "game" version of t
 
 #### The Beam Machine
 
+I first had to come up with a design for the actual beam. I had several design considerations in creating my setup: How long should the beam be? What kind of motor should I use to control the angle of the beam? How will the beam and motor be coupled? What sensor should I use to provide input data to my system?
 
+My initial designs were inspired by examples found online of previous theses and projects done on similar ideas. Mostly due to constraints on materials in the lab, I decided to use four aluminum rods of ~9.5mm diameter and ~1 foot length to create a railing to act as a beam. Thus, I also needed to design end caps that would hold the rods in place from either end of the beam. A CAD model of this is shown below:
+
+[INSERT IMAGE]
+
+Next, I decided to use the NEMA17 stepper motor as my actuator to control the beam angle. Although many examples found online used servo motors, I opted for the stepper motor as it has higher holding torque than servo motors, which was the motor of choice for many examples online. The higher torque was important as my beam, being made of aluminum, was not light. I also chose to have the motor attach to the beam at the beam's center. I then had to decide how the motor would become coupled, or attached, to the beam. Luckily, Nathan and the PS70 Lab had a pan-tilt machine, with open-source 3D printable parts, readily available for me to draw inspiration from. This pan-tilt machine is shown below:
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/pantilt.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+As you can see, this design provides mounts (green) in the front and back of the NEMA17 that can allow the motor to be bolted to a stable surface, and also includes an arm (black) that contains a rotary bearing. The NEMA17 is connected to a 20 tooth timing pulley, which is in turn connected to a 60 tooth timing pulley (orange) via a 200mm long timing belt. The 60 tooth timing pulley (orange) is then connected to a holder. With all of this setup available, I was free to use these open source designs to couple my motor and beam together. All I needed to design was the beam holder.
+
+
+
+
+### Materials
 
 
 ### Downloadable Files
