@@ -209,6 +209,58 @@ This ultrasonic sensor emits a 40kHz frequency sound wave, which bounces off an 
 
 For disances under 3cm, we see some strange behavior where the sensor is actually reading higher distances than the real value, meaning there is a lower bound on where the sensor is accurate. Afterwards, there is a fairly clean linear relationship between the sensor readings and the actual distance. However, the sensor readings are very consistently about 1cm shorter than the actual distance. Since the actual distance is measured from the very front edge of the sensor, this would not be an error from the ruler placement. Thus, it may be a good rule of thumb to perform sensor tests like this, find the average offset from the true distance, and account for this in the reporting of sensor values.
 
+#### Code:
+
+Source: <a href="https://randomnerdtutorials.com/complete-guide-for-ultrasonic-sensor-hc-sr04/">Random Nerd Tutorials</a><br>
+
+<pre><code>
+
+const int trigPin = 5;
+const int echoPin = 18;
+
+//define sound speed in cm/uS
+#define SOUND_SPEED 0.034
+#define CM_TO_INCH 0.393701
+
+long duration;
+float distanceCm;
+float distanceInch;
+
+void setup() {
+  Serial.begin(115200); // Starts the serial communication
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+}
+
+void loop() {
+  // Clears the trigPin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  
+  // Calculate the distance
+  distanceCm = duration * SOUND_SPEED/2;
+  
+  // Convert to inches
+  distanceInch = distanceCm * CM_TO_INCH;
+  
+  // Prints the distance in the Serial Monitor
+  Serial.print("Distance (cm): ");
+  Serial.println(distanceCm);
+  Serial.print("Distance (inch): ");
+  Serial.println(distanceInch);
+  
+  delay(1000);
+}
+
+</code></pre>
+
 
 </xmp>
 </body>
