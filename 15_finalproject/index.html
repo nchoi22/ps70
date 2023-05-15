@@ -180,6 +180,150 @@ Upon receiving the sensor, I redesigned the end cap to fit the sensor in snugly 
 
 ### Code
 
+<pre><code>
+
+#include "esp_now.h"
+#include "WiFi.h"
+#include "AccelStepper.h"
+#include "Adafruit_VL53L1X.h"
+
+#define IRQ_PIN 2
+#define XSHUT_PIN 3
+
+// initialize distance sensor
+Adafruit_VL53L1X vl53 = Adafruit_VL53L1X(XSHUT_PIN, IRQ_PIN);
+
+// Define constants for PID control:
+
+double pError,iError,dError;  //Error values associated with PID
+double Output;          //Sum of error values multiplied by their corresponding gains
+double prevError;         //Error from previous iteration
+unsigned long prevTime,now;   //Previous time and current time
+double dt;            //Change in time
+
+int Setpoint = 120;         //Desired point on the beam (mm)
+
+//Gains
+float Kp = 0.16;        //Proportional constant
+float Ki = 0.00005;       //Integration constant
+float Kd = 9;           //Derivation constant
+
+int distance;
+
+// Define an accelstepper object
+AccelStepper stepper(1,18,19);
+
+ 
+void setup() {
+  // Init Serial Monitor
+  Serial.begin(115200);
+
+  Wire.begin();
+  if (! vl53.begin(0x29, &Wire)) {
+    Serial.print("Error on init of VL sensor: ");
+    Serial.println(vl53.vl_status);
+    while (1)       delay(10);
+  }
+  Serial.println("VL53L1X sensor OK!");
+
+  Serial.print("Sensor ID: 0x");
+  Serial.println(vl53.sensorID(), HEX);
+
+  if (! vl53.startRanging()) {
+    Serial.print("Couldn't start ranging: ");
+    Serial.println(vl53.vl_status);
+    while (1)       delay(10);
+  }
+  Serial.println("Ranging started");
+
+  // Valid timing budgets: 15, 20, 33, 50, 100, 200 and 500ms!
+  vl53.setTimingBudget(50);
+  Serial.print("Timing budget (ms): ");
+  Serial.println(vl53.getTimingBudget());
+
+  stepper.setMaxSpeed(3000.0);
+  stepper.setAcceleration(1000.0);
+  stepper.setSpeed(600);
+  stepper.setCurrentPosition(0);
+
+  prevTime = 0;
+}
+ 
+void loop() {
+
+
+  //PID Algorithm
+  now = millis();
+  dt = (now - prevTime);
+  distance = getDistance();
+
+  Serial.print("Distance (mm): ");
+  Serial.println(distance);
+
+  pError = Setpoint - distance;
+  dError = (pError - prevError) / dt;
+  iError = iError + (pError * dt);
+  if (iError > 10) {
+    iError = 10;        //Error greater than 10 are ignored; noise
+  }
+
+  Output = Kp * pError + Ki * iError + Kd * dError;
+  Output = -1*Output;
+
+  //Upper and Lower Bound of PID
+  if (Output >12) {
+    Output = 12;
+  }
+  if (Output <-12) {
+    Output = -12;
+  }
+
+  
+
+  stepper.moveTo(Output);
+  stepper.runToPosition();
+
+  //Serial output
+  Serial.print("PID: ");
+  Serial.println(Output);
+  
+  //Set previous error and time
+  prevError = pError;
+  prevTime = now;
+
+}
+
+
+// this function gets current distance ball is at using the ultrasonic sensor
+int getDistance() {
+  int16_t distance;
+
+  if (vl53.dataReady()) {
+    // new measurement for the taking!
+    distance = vl53.distance();
+    vl53.clearInterrupt();
+    return distance;
+
+    /*
+    if (distance == -1) {
+      // something went wrong!
+      Serial.print("Couldn't get distance: ");
+      Serial.println(vl53.vl_status);
+      return;
+    }
+    Serial.print("Distance: ");
+    Serial.print(distance);
+    Serial.println(" mm");
+
+    // data is read out, time for another reading!
+    vl53.clearInterrupt();
+    */
+  }
+}
+}
+
+</code></pre>
+
 
 ### Materials
 
