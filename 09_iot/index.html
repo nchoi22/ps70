@@ -70,7 +70,259 @@ I first tried to do this using the LoRa RFM95W radio modules. These modules are 
   </div>
 </div><br>
 
-At this point, I switched over to the ESP_NOW protocol, which allows two ESP microcontrollers to communicate with one another on a 2.4GHz frequency without any external radio modules.
+At this point, I switched over to the ESP_NOW protocol, which allows two ESP microcontrollers to communicate with one another on a 2.4GHz frequency without any external radio modules. This was great, as this simplified things a lot and I didn't need super long range communication anyway. After some testing, I was able to get the two ESP's talking to each other and communicating. However, I was not immediately able to get the button functionality to work. I stopped working on this as I moved on to other portions of my final project, and when I returned to this functionality, the ESP32S2's were not able to communicate with one another for some reason. I still have not resolved this issue, but my efforts in achieving communication are below in the code.
+
+The first snippet of code is for the "sender" ESP, which has two buttons for each direction the motor could move:
+
+<pre><code>
+#include <esp_now.h>
+#include <WiFi.h>
+
+#define BUTTON_LEFT 7 //GPIO pin connected to button
+#define BUTTON_RIGHT 8
+
+// REPLACE WITH THE MAC Address of your receiver 
+//uint8_t broadcastAddress[] = {0x70, 0x04, 0x1D, 0xFB, 0x35, 0x9C};
+uint8_t broadcastAddress[] = {0x60, 0x55, 0xF9, 0xDF, 0xEA, 0x2A};
+
+// Variable to store if sending data was successful
+String success;
+
+//Structure example to send data
+//Must match the receiver structure
+typedef struct struct_message {
+    float msg;
+} struct_message;
+
+// Create a struct_message called ButtonState to hold button message
+struct_message ButtonState;
+struct_message incomingReadings;
+
+esp_now_peer_info_t peerInfo;
+
+int lastStateLeft = LOW;
+int currentStateLeft;
+
+int lastStateRight = LOW;
+int currentStateRight;
+
+// Callback when data is sent
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("\r\nLast Packet Send Status:\t");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  if (status ==0){
+    success = "Delivery Success :)";
+  }
+  else{
+    success = "Delivery Fail :(";
+  }
+}
+
+// Callback when data is received
+void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+  memcpy(&incomingReadings, incomingData, sizeof(incomingReadings));
+  Serial.print("Bytes received: ");
+  Serial.println(len);
+}
+ 
+void setup() {
+  // Init Serial Monitor
+  Serial.begin(115200);
+
+  pinMode(7,INPUT_PULLUP);
+ 
+  // Set device as a Wi-Fi Station
+  WiFi.mode(WIFI_STA);
+
+  // Init ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+  }
+
+  // Once ESPNow is successfully Init, we will register for Send CB to
+  // get the status of Trasnmitted packet
+  esp_now_register_send_cb(OnDataSent);
+  
+  // Register peer
+  memcpy(peerInfo.peer_addr, broadcastAddress, 6);
+  peerInfo.channel = 0;  
+  peerInfo.encrypt = false;
+  
+  // Add peer        
+  if (esp_now_add_peer(&peerInfo) != ESP_OK){
+    Serial.println("Failed to add peer");
+    return;
+  }
+  // Register for a callback function that will be called when data is received
+  esp_now_register_recv_cb(OnDataRecv);
+}
+ 
+void loop() {
+
+// send message if left button is pressed
+  currentStateLeft = digitalRead(BUTTON_LEFT);
+
+  if (lastStateLeft == LOW && currentStateLeft == HIGH) {
+    // Send message via ESP-NOW
+    ButtonState.msg = 5.0;
+    esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &ButtonState, sizeof(ButtonState));
+    
+    if (result == ESP_OK) {
+      Serial.println("Sent with success");
+    }
+    else {
+      Serial.println("Error sending the data");
+    }
+  }
+
+  lastStateLeft = currentStateLeft;
+
+// send message if right button is pressed
+  currentStateRight = digitalRead(BUTTON_RIGHT);
+
+  if (lastStateRight == LOW && currentStateRight == HIGH) {
+    // Send message via ESP-NOW
+    ButtonState.msg = -5.0;
+    esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &ButtonState, sizeof(ButtonState));
+    
+    if (result == ESP_OK) {
+      Serial.println("Sent with success");
+    }
+    else {
+      Serial.println("Error sending the data");
+    }
+  }
+
+  lastStateRight = currentStateRight;
+    
+}
+
+</code></pre>
+
+The next snippet of code is for the "receiver", which has the stepper motor.
+
+<pre><code>
+#include <esp_now.h>
+#include <WiFi.h>
+#include <AccelStepper.h>
+
+
+// Define an accelstepper object
+AccelStepper stepper(1,9,10);
+
+int incoming_value;
+
+
+// REPLACE WITH THE MAC Address of your receiver 
+//uint8_t broadcastAddress[] = {0x60, 0x55, 0xF9, 0xDF, 0xEA, 0x2A};
+uint8_t broadcastAddress[] = {0x70, 0x04, 0x1D, 0xFB, 0x35, 0x9C};
+
+// Variable to store if sending data was successful
+String success;
+
+//Structure example to send data
+//Must match the receiver structure
+typedef struct struct_message {
+    float msg;
+} struct_message;
+
+// Create a struct_message called ButtonState to hold button message
+struct_message ButtonState;
+struct_message incomingReadings;
+
+esp_now_peer_info_t peerInfo;
+
+
+// Callback when data is sent
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("\r\nLast Packet Send Status:\t");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+  if (status ==0){
+    success = "Delivery Success :)";
+  }
+  else{
+    success = "Delivery Fail :(";
+  }
+}
+
+// Callback when data is received
+void OnDataRecv(const uint8_t * mac, const uint8_t *incomingData, int len) {
+  memcpy(&incomingReadings, incomingData, sizeof(incomingReadings));
+  Serial.print("Bytes received: ");
+  Serial.println(len);
+  incoming_value = incomingReadings.msg;
+}
+ 
+void setup() {
+  // Init Serial Monitor
+  Serial.begin(115200);
+
+  // ultrasonic
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+
+  stepper.setMaxSpeed(3000.0);
+  stepper.setAcceleration(1000.0);
+  stepper.setSpeed(600);
+  stepper.setCurrentPosition(0);
+
+ 
+  // Set device as a Wi-Fi Station
+  WiFi.mode(WIFI_STA);
+
+  // Init ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+  }
+
+  // Once ESPNow is successfully Init, we will register for Send CB to
+  // get the status of Trasnmitted packet
+  esp_now_register_send_cb(OnDataSent);
+  
+  // Register peer
+  memcpy(peerInfo.peer_addr, broadcastAddress, 6);
+  peerInfo.channel = 0;  
+  peerInfo.encrypt = false;
+  
+  // Add peer        
+  if (esp_now_add_peer(&peerInfo) != ESP_OK){
+    Serial.println("Failed to add peer");
+    return;
+  }
+  // Register for a callback function that will be called when data is received
+  esp_now_register_recv_cb(OnDataRecv);
+
+  // initialize the incoming value to be 0
+  incoming_value = 0;
+}
+ 
+void loop() {
+  if (incoming_value == -5) {
+    stepper.moveTo(-10);
+    stepper.runToPosition();
+    incoming_value = 0;
+  }
+  else if (incoming_value == 5) {
+    stepper.moveTo(10);
+    stepper.runToPosition();
+    incoming_value = 0;
+  }
+}
+</code></pre>
+
+Below is an image showing the circuit of the receiver:
+
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/messy_circuit.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
 
 </xmp>
 </body>
