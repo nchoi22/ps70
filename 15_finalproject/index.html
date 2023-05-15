@@ -73,6 +73,8 @@ Initially, I also wanted to gamify this setup, allowing a user to control the an
 
 Before getting into the nitty gritty of how this project came together, below is a video showing the current functionality of the PID controller. After many iterations, though we don't have a perfect controller, the ball does stay close to the center of the beam!
 
+(If the video doesn't play, please navigate to this <a href="https://www.youtube.com/watch?v=3Fz6Z_iDU54&ab_channel=NoaChoi">Youtube Link</a>.)
+
 <iframe width="1019" height="573" src="https://www.youtube.com/embed/3Fz6Z_iDU54&ab_channel=NoaChoi" frameborder="0" 
 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen> </iframe> 
 
@@ -92,6 +94,8 @@ My initial designs were inspired by examples found online of previous theses and
 
 [INSERT IMAGE]
 
+I decided to use the ultrasonic sensor HC-SR04, attached to one end of the beam. That way, I could use 
+
 Next, I decided to use the NEMA17 stepper motor as my actuator to control the beam angle. Although many examples found online used servo motors, I opted for the stepper motor as it has higher holding torque than servo motors, which was the motor of choice for many examples online. The higher torque was important as my beam, being made of aluminum, was not light. I also chose to have the motor attach to the beam at the beam's center. I then had to decide how the motor would become coupled, or attached, to the beam. Luckily, Nathan and the PS70 Lab had a pan-tilt machine, with open-source 3D printable parts, readily available for me to draw inspiration from. This pan-tilt machine is shown below:
 
 <div class="container-fluid bg-3 text-center">    
@@ -104,6 +108,34 @@ Next, I decided to use the NEMA17 stepper motor as my actuator to control the be
 
 As you can see, this design provides mounts (green) in the front and back of the NEMA17 that can allow the motor to be bolted to a stable surface, and also includes an arm (black) that contains a rotary bearing. The NEMA17 is connected to a 20 tooth timing pulley, which is in turn connected to a 60 tooth timing pulley (orange) via a 200mm long timing belt. The 60 tooth timing pulley (orange) is then connected to a holder. With all of this setup available, I was free to use these open source designs to couple my motor and beam together. All I needed to design was the beam holder.
 
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/iter1_1.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+    <div class="col-sm-3">
+      <img src="/ps70/iter1_2.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+    <div class="col-sm-3">
+      <img src="/ps70/iter1_3.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+Above are images of the first iteration of the beam design, displaying what the end caps and beam holder look like, and the overall setup of the machine. It's clear in the first image that the beam holder needed a redesign - it didn't allow the ball to pass through the middle. It was also apparent that the end cap needed to be designed to allow for the ultrasonic sensor to be stable. 
+
+A redesign in the parts involved multiple iterations of CADing and 3D prints, resulting in a beam with wider top rods to allow room for the ball in the center of the beam (and to fit the ultrasonic sensor in between the two top rods), a new beam holder (imaged below), and a new end cap that fits the emitter and receiver of the ultrasonic sensor snugly for stability. 
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/beam_holder_final.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+    <div class="col-sm-3">
+      <img src="/ps70/setup2.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
 
 
 
