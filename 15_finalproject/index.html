@@ -172,7 +172,11 @@ Upon receiving the sensor, I redesigned the end cap to fit the sensor in snugly 
   </div>
 </div><br>
 
+After soldering wires to the sensor, I followed <a href="https://learn.adafruit.com/adafruit-vl53l1x/arduino">this</a> Adafruit tutorial to start reading data. Luckily, the sensor didn't require any calibration. However, the sensor requires I2C communication protocol, which I found wasn't very compatible with the ESP32S2 Dev Board. After some troubleshooting, I decided to just switch over completely to the ESP32 Dev Board for my microcontroller. I made sure to carefully transfer and rewire the stepper motor to the new microcontroller as well, and was able to reintegrate everything onto the new microcontroller. The setup is shown below:
 
+
+
+Using this new sensor was a success! 
 
 
 ### Electronics
@@ -332,6 +336,8 @@ int getDistance() {
 
 1. <a download="/ps70/beam_holder.stl">Beam Holder STL File</a><br>
 2. 
+
+### Discussion
 
 
 
