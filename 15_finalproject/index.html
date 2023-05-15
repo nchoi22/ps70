@@ -137,6 +137,20 @@ A redesign in the parts involved multiple iterations of CADing and 3D prints, re
   </div>
 </div><br>
 
+The image on the right shows the final hardware setup at this stage in the project. The ultrasonic sensor is now fit within the end cap, and the motor rig is mounted to a piece of wood, with added weights for stability. Due to the design of the motor holds, it was easy to thread M3 screwholes into the wood and mount the rig into the wood.
+
+Getting to this point alone took a lot of time and iterations. Concurrently, I was setting up the circuitry and code that would drive the controller, testing out each component individually before putting them together in an Arduino sketch. The circuit contains: ESP32S2 microcontroller, NEMA17 Stepper Motor, A4988 Motor Driver, ultrasonic sensor HC-SR04, and a 12V wall plug power source (for the stepper motor).
+
+After the hardware was complete, I added PID control software to the Arduino sketch. The PID control software can be found below in the "Code" section (note: the code found there is the final code, not the code used during this phase of the project. The code from this phase is not included because it is mostly very similar, except for what sensor is being used). Upon testing, the results were not great, as can be seen below:
+
+[INSERT VIDEO]
+
+Clearly, the 
+
+### Electronics
+
+
+### Code
 
 
 ### Materials
@@ -144,7 +158,8 @@ A redesign in the parts involved multiple iterations of CADing and 3D prints, re
 
 ### Downloadable Files
 
-
+1. <a download="/ps70/beam_holder.stl">Beam Holder STL File</a><br>
+2. 
 
 
 
