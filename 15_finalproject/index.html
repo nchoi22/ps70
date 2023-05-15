@@ -86,7 +86,7 @@ In this section, I will outline in detail various steps throughout the developme
 
 Initially, I was planning to design a remote control for the "game" version of the controller. Thus, I wanted to implement radio communication between two ESP 32 S2 microcontrollers. Initially, I tried achieving this using LoRa RMF95W radio modules, but then pivoted to using the <a href="https://nathanmelenbrink.github.io/ps70/09_networking/index.html">ESP_NOW protocol</a> for direct communication between two ESP microcontrollers. Of course, since the game part of the project was abandoned, this portion was not completed. However, progress on this front can be found on the <a href="nchoi22.github.io/ps70/09_iot/index.html">IoT and Radio</a> page.
 
-#### The Beam Machine
+#### The Beam Machine (Attempt #1)
 
 I first had to come up with a design for the actual beam. I had several design considerations in creating my setup: How long should the beam be? What kind of motor should I use to control the angle of the beam? How will the beam and motor be coupled? What sensor should I use to provide input data to my system?
 
@@ -94,7 +94,7 @@ My initial designs were inspired by examples found online of previous theses and
 
 [INSERT IMAGE]
 
-I decided to use the ultrasonic sensor HC-SR04, attached to one end of the beam. That way, I could use 
+I decided to use the ultrasonic sensor HC-SR04, attached to one end of the beam. That way, I could use the ball's position, read from this sensor, as the INPUT to the control system, with the beam's angle controlled by a motor as the OUTPUT of the system.
 
 Next, I decided to use the NEMA17 stepper motor as my actuator to control the beam angle. Although many examples found online used servo motors, I opted for the stepper motor as it has higher holding torque than servo motors, which was the motor of choice for many examples online. The higher torque was important as my beam, being made of aluminum, was not light. I also chose to have the motor attach to the beam at the beam's center. I then had to decide how the motor would become coupled, or attached, to the beam. Luckily, Nathan and the PS70 Lab had a pan-tilt machine, with open-source 3D printable parts, readily available for me to draw inspiration from. This pan-tilt machine is shown below:
 
@@ -145,7 +145,35 @@ After the hardware was complete, I added PID control software to the Arduino ske
 
 [INSERT VIDEO]
 
-Clearly, the 
+Clearly, the controller was not working as intended. A huge problem I discovered during testing was that the ultrasonic sensor was very inaccurate only in the center portion of the beam. This was because of how the ultrasonic sensor works and the geometry of the ping pong ball. The sensor pings whatever object is in front of it with a 40kHz sound wave, and calculates the distance to the object based on how long it takes for the signal to get back to the sensor's receiver. However, at a certain point, because of how far apart the receiver and emitter are and because the ping pong ball is a sphere, the emitted signal will scatter off of the ball and not bounce directly back to the receiver, giving faulty results. 
+
+The imprecision of the sensor severely limited the ability to control the ball's position. However, due to the fact that the sensor was accurate between the sensor and the center of the beam, I was able to sort of control the ball within this section of the beam:
+
+[INSERT VIDEO]
+
+#### The Beam Machine (Attempt 2)
+
+Due to the sensor's limitations, I decided to try this out with a different sensor. Per Nathan's recommendation, I went ahead and ordered the VL53L1X Time-of-Flight (ToF) sensor (imaged below).
+
+[INSERT IMAGE]
+
+This sensor uses the time it takes for an infrared laser to bounce off of an object to measure the object's distance, and the emitter and receiver are very close together. In addition, this sensor has a proximity range of ~3cm - 4m. Thus, theoretically, this sensor should work very well with this system.
+
+Upon receiving the sensor, I redesigned the end cap to fit the sensor in snugly for stability. I very slightly overcut the opening, but a little bit of masking tape on the sensor did the trick:
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/endcap_final.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+    <div class="col-sm-3">
+      <img src="/ps70/sensor_fit.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+
+
 
 ### Electronics
 
