@@ -54,7 +54,9 @@
 
 ## Assignment:
 
-This week, we were tasked with creating our own capacitive sensor to measure some physical quantity, and calibrating this and another sensor of our choosing. For the second sensor, I chose an inertial measurement unit (IMU MPU6050).
+This week, we were tasked with creating our own capacitive sensor to measure some physical quantity, and calibrating this and another sensor of our choosing. For the second sensor, I chose the HC-SR04 Ultrasonic Distance Sensor.
+
+### Capacitive Sensing
 
 I decided to create a simple capacitive sensor that can detect the distance a human hand is from the sensor, and use this information to control how many LED's are lit up on an LED strip. The basic setup for this is shown below:
 
@@ -99,7 +101,7 @@ grounding the Arduino board, use a larger resistor (>10Mohm) to increase sensiti
 
 I will need to take into account these results to change my circuitry for more sensitive and stable readings, and implement better code to have the system do what I want it to do. The current state of the code, which has the basic shell of what the program will do, is shown below. After better calibration is achieved, the void led_update() function will be modified to map sensor readings to a physical height, and then to the number of LEDs that should be lit up. 
 
-### Code:
+#### Code:
 
 <pre><code>
 
@@ -180,6 +182,15 @@ void loop()
 
     delay(10);                             // arbitrary delay to limit data to serial port 
 }
+
+
+### Ultrasonic Sensor HC-SR04
+
+Next, I decided to try out and calibrate the ultrasonic sensor HC-S404, imaged below. 
+
+[INSERT IMAGE]
+
+This ultrasonic sensor emits a 40kHz frequency sound wave, which bounces off an object in front of it to return to the receiver. Thus, using the speed of sound and the time it took for the signal to come back to the sensor, the distance of the object in front of it can be estimated.
 
 
 
