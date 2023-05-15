@@ -174,12 +174,19 @@ Upon receiving the sensor, I redesigned the end cap to fit the sensor in snugly 
 
 After soldering wires to the sensor, I followed <a href="https://learn.adafruit.com/adafruit-vl53l1x/arduino">this</a> Adafruit tutorial to start reading data. Luckily, the sensor didn't require any calibration. However, the sensor requires I2C communication protocol, which I found wasn't very compatible with the ESP32S2 Dev Board. After some troubleshooting, I decided to just switch over completely to the ESP32 Dev Board for my microcontroller. I made sure to carefully transfer and rewire the stepper motor to the new microcontroller as well, and was able to reintegrate everything onto the new microcontroller. The setup is shown below:
 
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/final_setup.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
 
+Using this new sensor was a success! Integration was relatively seamless, and the data was accurate throughout the beam. Thus I was able to implement a PID control loop using the sensor's data as input. Every time the microcontroller loops through in void loop(), it gets a distance reading from the sensor to get the ball's current position. Based on the time since the last loop, as well as various error terms (for example, the "proportional error", or pError the code below, is how far the ball is from the desired "Setpoint"), an effective output is produced that corresponds to an angle the beam should move to. When the program starts, the beam should be manually set to around 0 degrees, and the program will initialize the current position of the motor to be 0 degrees. In the code, upper and lower bounds are placed on the "motor position", or angle, that the stepper motor can go to, since in the physical setup the beam can't surpass certain angles. The bounds were determined by a physical measurement of the maximum angle the beams can hit, and dividing that angle by the motor's step-angle of 1.8 degrees.
 
-Using this new sensor was a success! 
+The PID control constants, Kp, Ki, and Kd were manually found by trial and error. I attempted to use MATLAB to model and solve for optimal PID constants. However, based on system dynamics found in literature, and real physical parameters of my system, MATLAB was unable to find a controller that tracked a desired reference position (center of the beam). Moreover, many previous projects that modeled the PID controller through simulation ended up largely deviating from the simulated control constants in practice. Thus, I tuned the controller manually and found a relatively good combination of constants, though there is sure to be an optimal set of control constants that can achieve better performance.
 
-
-### Electronics
+The final performance of the controller is seen in the final demo video, which is at the top of this page!
 
 
 ### Code
@@ -328,8 +335,13 @@ int getDistance() {
 
 </code></pre>
 
+### Electronics
+
+Please check back for a full circuit diagram.
 
 ### Materials
+
+Please check back for a full list of materials.
 
 
 ### Downloadable Files
