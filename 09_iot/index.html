@@ -56,7 +56,21 @@
 
 This week, we were assigned with working with a partner or a group of 3 to program one or more microcontroller(s) to obtain and respond to information from the internet or radio, with at least one input and one output device.
 
-Unfortunately, this was the week that I had COVID-19, and I was unable to partner up with anybody for this assignment. Thus, 
+Unfortunately, this was the week that I had COVID-19, and I was unable to partner up with anybody for this assignment. Thus, I attempted this assignment for the remote control part of my <a href="https://nchoi22.github.io/ps70/15_finalproject/index.html">final project</a> (which later was removed from the final project).
+
+The goal was to have two ESP32S2 microcontrollers communicate with one another via radio, such that button inputs from one ESP could trigger motor movements on a NEMA17 stepper motor on the other ESP.
+
+I first tried to do this using the LoRa RFM95W radio modules. These modules are a popular choice for long-range radio communication. I spent some time soldering wires to these modules, as shown below, and trying to connect the modules to the ESP32S2. However, I was not able to get the two microcontrollers talking, likely because I was not using the SPI communication protocol properly. 
+
+<div class="container-fluid bg-3 text-center">    
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="/ps70/lora.png" class="img-responsive" style="width:100%" alt="Image"></a>
+    </div>
+  </div>
+</div><br>
+
+At this point, I switched over to the ESP_NOW protocol, which allows two ESP microcontrollers to communicate with one another on a 2.4GHz frequency without any external radio modules.
 
 </xmp>
 </body>
