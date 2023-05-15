@@ -64,7 +64,7 @@ Keeping in line with my interests outlined in <a href="nchoi22.github.io/ps70/01
   </div>
 </div><br>
 
-As we can see, a ball can freely roll along a beam with one degree of freedom: its angle. 
+As we can see, a ball can freely roll along a beam with one degree of freedom: its angle. Though the setup is relatively simple, this type of control system is analagous to much more complicated ones, such as control thrusters to maintain the orientation of a rocket.
 
 Initially, I also wanted to gamify this setup, allowing a user to control the angle of the beam manually using a remote control. This controller would have button and/or tilt control, using buttons and IMU's, respectively, to change the angle of the beam. However, just creating the automatic controller itself proved to be a big challenge, an this became the focus of the project without the gamification.
 
@@ -76,6 +76,17 @@ Before getting into the nitty gritty of how this project came together, below is
 [INSERT VIDEO HERE]
 
 ### Build Process and Details
+
+In this section, I will outline in detail various steps throughout the development of this project.
+
+#### The Remote
+
+Initially, I was planning to design a remote control for the "game" version of the controller. Thus, I wanted to implement radio communication between two ESP 32 S2 microcontrollers. Initially, I tried achieving this using LoRa RMF95W radio modules, but then pivoted to using the <a href="https://nathanmelenbrink.github.io/ps70/09_networking/index.html">ESP_NOW protocol</a> for direct communication between two ESP microcontrollers. Of course, since the game part of the project was abandoned, this portion was not completed. However, progress on this front can be found on the <a href="nchoi22.github.io/ps70/09_iot/index.html">IoT and Radio</a> page.
+
+#### 
+
+
+### Downloadable Files
 
 
 
