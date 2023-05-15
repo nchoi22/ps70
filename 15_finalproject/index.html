@@ -90,9 +90,7 @@ Initially, I was planning to design a remote control for the "game" version of t
 
 I first had to come up with a design for the actual beam. I had several design considerations in creating my setup: How long should the beam be? What kind of motor should I use to control the angle of the beam? How will the beam and motor be coupled? What sensor should I use to provide input data to my system?
 
-My initial designs were inspired by examples found online of previous theses and projects done on similar ideas. Mostly due to constraints on materials in the lab, I decided to use four aluminum rods of ~9.5mm diameter and ~1 foot length to create a railing to act as a beam. Thus, I also needed to design end caps that would hold the rods in place from either end of the beam. A CAD model of this is shown below:
-
-[INSERT IMAGE]
+My initial designs were inspired by examples found online of previous theses and projects done on similar ideas. Mostly due to constraints on materials in the lab, I decided to use four aluminum rods of ~9.5mm diameter and ~1 foot length to create a railing to act as a beam. Thus, I also needed to design end caps that would hold the rods in place from either end of the beam.
 
 I decided to use the ultrasonic sensor HC-SR04, attached to one end of the beam. That way, I could use the ball's position, read from this sensor, as the INPUT to the control system, with the beam's angle controlled by a motor as the OUTPUT of the system.
 
@@ -143,13 +141,19 @@ Getting to this point alone took a lot of time and iterations. Concurrently, I w
 
 After the hardware was complete, I added PID control software to the Arduino sketch. The PID control software can be found below in the "Code" section (note: the code found there is the final code, not the code used during this phase of the project. The code from this phase is not included because it is mostly very similar, except for what sensor is being used). Upon testing, the results were not great, as can be seen below:
 
-[INSERT VIDEO]
+(If the video doesn't play, please navigate to this <a href="https://youtube.com/shorts/sUQp7hVfb_Q">Youtube Link</a>.)
+
+<iframe width="1019" height="573" src="https://youtube.com/shorts/sUQp7hVfb_Q" frameborder="0" 
+allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen> </iframe> 
 
 Clearly, the controller was not working as intended. A huge problem I discovered during testing was that the ultrasonic sensor was very inaccurate only in the center portion of the beam. This was because of how the ultrasonic sensor works and the geometry of the ping pong ball. The sensor pings whatever object is in front of it with a 40kHz sound wave, and calculates the distance to the object based on how long it takes for the signal to get back to the sensor's receiver. However, at a certain point, because of how far apart the receiver and emitter are and because the ping pong ball is a sphere, the emitted signal will scatter off of the ball and not bounce directly back to the receiver, giving faulty results. 
 
 The imprecision of the sensor severely limited the ability to control the ball's position. However, due to the fact that the sensor was accurate between the sensor and the center of the beam, I was able to sort of control the ball within this section of the beam:
 
-[INSERT VIDEO]
+(If the video doesn't play, please navigate to this <a href="https://youtu.be/49g47TpM4Ro">Youtube Link</a>.)
+
+<iframe width="1019" height="573" src="https://youtu.be/49g47TpM4Ro" frameborder="0" 
+allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen> </iframe> 
 
 #### The Beam Machine (Attempt 2)
 
